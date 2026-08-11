@@ -1,0 +1,997 @@
+<title>UpAhead Teardown — What to Bring into Brightspace Tracker</title>
+<style>
+  :root {
+    --paper:      #F1F3F6;
+    --surface:    #FFFFFF;
+    --surface-2:  #E7EAEF;
+    --ink:        #171A21;
+    --ink-soft:   #38404E;
+    --muted:      #5D6575;
+    --rule:       #D2D7E0;
+    --rule-soft:  #E2E6EC;
+    --accent:     #A9530F;
+    --accent-bg:  #F6E9DC;
+    --have:       #0D6155;
+    --have-bg:    #DDEBE8;
+    --gap:        #8B2D44;
+    --gap-bg:     #F1DFE3;
+    --shadow:     0 1px 2px rgba(23,26,33,.05), 0 8px 24px -16px rgba(23,26,33,.18);
+
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", "Times New Roman", serif;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+
+    --fs-xs: .75rem;
+    --fs-sm: .875rem;
+    --fs-base: 1.0625rem;
+    --fs-lg: 1.1875rem;
+    --fs-xl: 1.5rem;
+    --fs-2xl: 2rem;
+    --fs-3xl: 2.75rem;
+
+    --measure: 68ch;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:      #13161C;
+      --surface:    #1B1F27;
+      --surface-2:  #242935;
+      --ink:        #E7EAF0;
+      --ink-soft:   #C3C9D4;
+      --muted:      #939CAB;
+      --rule:       #2E3542;
+      --rule-soft:  #262C37;
+      --accent:     #E09A5B;
+      --accent-bg:  #33251A;
+      --have:       #55BFAD;
+      --have-bg:    #16302C;
+      --gap:        #E08C9F;
+      --gap-bg:     #332025;
+      --shadow:     0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.7);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper:      #13161C;
+    --surface:    #1B1F27;
+    --surface-2:  #242935;
+    --ink:        #E7EAF0;
+    --ink-soft:   #C3C9D4;
+    --muted:      #939CAB;
+    --rule:       #2E3542;
+    --rule-soft:  #262C37;
+    --accent:     #E09A5B;
+    --accent-bg:  #33251A;
+    --have:       #55BFAD;
+    --have-bg:    #16302C;
+    --gap:        #E08C9F;
+    --gap-bg:     #332025;
+    --shadow:     0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.7);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: var(--fs-base);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 74rem;
+    margin: 0 auto;
+    padding: 0 1.5rem 6rem;
+  }
+
+  .col {
+    max-width: var(--measure);
+  }
+
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:focus-visible, summary:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* ---------- masthead ---------- */
+
+  .masthead {
+    padding: 4.5rem 0 2.5rem;
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .kicker {
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  h1 {
+    font-family: var(--serif);
+    font-size: var(--fs-3xl);
+    line-height: 1.08;
+    font-weight: 600;
+    letter-spacing: -.015em;
+    text-wrap: balance;
+    margin: 0;
+    max-width: 30ch;
+  }
+
+  .standfirst {
+    font-size: var(--fs-lg);
+    line-height: 1.55;
+    color: var(--ink-soft);
+    margin: 0;
+    max-width: 60ch;
+  }
+
+  .masthead-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem 1.75rem;
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    color: var(--muted);
+    letter-spacing: .04em;
+  }
+
+  /* ---------- sourcing note ---------- */
+
+  .note {
+    margin: 2.5rem 0 0;
+    padding: 1.125rem 1.375rem;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent);
+    border-radius: 3px;
+    font-size: var(--fs-sm);
+    line-height: 1.6;
+    color: var(--ink-soft);
+    max-width: var(--measure);
+  }
+  .note strong { color: var(--ink); font-weight: 600; }
+  .note code {
+    font-family: var(--mono);
+    font-size: .9em;
+    background: var(--surface-2);
+    padding: .1em .35em;
+    border-radius: 2px;
+  }
+
+  /* ---------- sections ---------- */
+
+  section { padding-top: 4rem; }
+
+  .sec-head {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 1.75rem;
+    padding-bottom: .625rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .sec-num {
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    color: var(--accent);
+    letter-spacing: .1em;
+    flex: none;
+    padding-top: .35em;
+  }
+
+  h2 {
+    font-family: var(--serif);
+    font-size: var(--fs-2xl);
+    line-height: 1.15;
+    font-weight: 600;
+    letter-spacing: -.01em;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  h3 {
+    font-family: var(--sans);
+    font-size: var(--fs-base);
+    font-weight: 650;
+    letter-spacing: -.005em;
+    margin: 2rem 0 .5rem;
+  }
+
+  p { margin: 0 0 1rem; }
+  .col > p:last-child { margin-bottom: 0; }
+
+  /* ---------- inventory grid ---------- */
+
+  .inventory {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .inv-cell {
+    background: var(--surface);
+    padding: 1.25rem 1.375rem 1.375rem;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+  }
+
+  .inv-cell h4 {
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0;
+    font-weight: 500;
+  }
+
+  .inv-cell ul {
+    margin: 0;
+    padding-left: 1.1em;
+    font-size: var(--fs-sm);
+    line-height: 1.55;
+    color: var(--ink-soft);
+    display: flex;
+    flex-direction: column;
+    gap: .3rem;
+  }
+  .inv-cell li::marker { color: var(--muted); }
+  .inv-cell li b { color: var(--ink); font-weight: 600; }
+
+  /* ---------- matrix ---------- */
+
+  .scroller {
+    overflow-x: auto;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    background: var(--surface);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--fs-sm);
+    min-width: 44rem;
+  }
+
+  thead th {
+    text-align: left;
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: .875rem 1rem;
+    border-bottom: 1px solid var(--rule);
+    background: var(--surface-2);
+    white-space: nowrap;
+  }
+  thead th:first-child { width: 40%; }
+
+  tbody td {
+    padding: .8rem 1rem;
+    border-bottom: 1px solid var(--rule-soft);
+    vertical-align: top;
+    color: var(--ink-soft);
+  }
+  tbody tr:last-child td { border-bottom: 0; }
+  tbody td:first-child { color: var(--ink); font-weight: 500; }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: .4em;
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    letter-spacing: .04em;
+    padding: .2em .5em;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  .chip::before { font-weight: 700; }
+  .c-yes  { background: var(--have-bg);   color: var(--have); }
+  .c-yes::before  { content: "✓"; }
+  .c-part { background: var(--accent-bg); color: var(--accent); }
+  .c-part::before { content: "~"; }
+  .c-no   { background: var(--gap-bg);    color: var(--gap); }
+  .c-no::before   { content: "×"; }
+
+  /* ---------- recommendation cards ---------- */
+
+  .recs {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .rec {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .rec-top {
+    display: flex;
+    gap: 1.125rem;
+    align-items: flex-start;
+    padding: 1.25rem 1.375rem;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+
+  .rank {
+    font-family: var(--mono);
+    font-size: var(--fs-xl);
+    font-weight: 600;
+    line-height: 1;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+    flex: none;
+    padding-top: .1em;
+    min-width: 2ch;
+  }
+
+  .rec-title {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .rec-title h3 {
+    margin: 0;
+    font-size: var(--fs-lg);
+    font-weight: 650;
+    line-height: 1.3;
+    letter-spacing: -.01em;
+  }
+
+  .tags { display: flex; flex-wrap: wrap; gap: .4rem; }
+
+  .tag {
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    letter-spacing: .05em;
+    padding: .2em .5em;
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    color: var(--muted);
+    background: var(--paper);
+  }
+  .tag b { color: var(--ink-soft); font-weight: 600; }
+
+  .rec-body {
+    padding: 1.25rem 1.375rem;
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 56rem) {
+    .rec-body { grid-template-columns: 1fr 1fr; }
+  }
+
+  .rec-body h5 {
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    margin: 0 0 .5rem;
+  }
+  .rec-body p, .rec-body ul {
+    font-size: var(--fs-sm);
+    line-height: 1.6;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+  .rec-body ul {
+    padding-left: 1.1em;
+    display: flex;
+    flex-direction: column;
+    gap: .35rem;
+  }
+  .rec-body code {
+    font-family: var(--mono);
+    font-size: .88em;
+    background: var(--surface-2);
+    padding: .1em .35em;
+    border-radius: 2px;
+    color: var(--ink);
+  }
+  .rec-body strong { color: var(--ink); font-weight: 600; }
+
+  /* ---------- avoid list ---------- */
+
+  .avoid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    gap: 1rem;
+  }
+  .avoid-item {
+    border: 1px solid var(--rule);
+    border-top: 3px solid var(--gap);
+    border-radius: 4px;
+    background: var(--surface);
+    padding: 1.125rem 1.25rem;
+  }
+  .avoid-item h4 {
+    margin: 0 0 .4rem;
+    font-size: var(--fs-sm);
+    font-weight: 650;
+    color: var(--ink);
+  }
+  .avoid-item p {
+    margin: 0;
+    font-size: var(--fs-sm);
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- sources ---------- */
+
+  .sources {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: .625rem;
+    font-size: var(--fs-sm);
+    max-width: var(--measure);
+  }
+  .sources li {
+    display: flex;
+    gap: .75rem;
+    align-items: baseline;
+    color: var(--muted);
+  }
+  .sources .n {
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    color: var(--accent);
+    flex: none;
+    font-variant-numeric: tabular-nums;
+  }
+
+  footer {
+    margin-top: 4rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--rule);
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    letter-spacing: .04em;
+    color: var(--muted);
+  }
+
+  @media (max-width: 40rem) {
+    :root { --fs-3xl: 2rem; --fs-2xl: 1.5rem; }
+    .masthead { padding-top: 3rem; }
+    .sec-head { flex-direction: column; gap: .25rem; }
+    .sec-num { padding-top: 0; }
+  }
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="kicker">Competitive teardown &middot; product roadmap</p>
+    <h1>What UpAhead does that Brightspace Tracker doesn&rsquo;t &mdash; and which parts are worth taking</h1>
+    <p class="standfirst">UpAhead and Brightspace Tracker solve the same problem from opposite ends: one is a server-side account that students feed a syllabus to, the other is a browser extension that reads the LMS directly. That single architectural difference explains almost every feature gap between them.</p>
+    <div class="masthead-meta">
+      <span>Subject: upahead.online</span>
+      <span>Compared against: brightspacetracker.com</span>
+      <span>11 Aug 2026</span>
+    </div>
+  </header>
+
+  <div class="note">
+    <strong>On sourcing.</strong> This session&rsquo;s network policy blocks <code>upahead.online</code>, <code>apps.apple.com</code>, and <code>brightspacetracker.com</code> at the egress proxy (403 on <code>CONNECT</code>), so none of the pages were read first-hand. Everything below is reconstructed from web-search result content covering their landing page, <code>/students</code>, <code>/parents</code>, <code>/pricing</code>, the iOS App Store listing, a founder interview, and their Chrome Web Store copy. Product claims are theirs and unverified; feature <em>presence</em> is well-corroborated, exact pricing tiers and current app behavior are the least reliable parts. Treat the roadmap as sound and spot-check the pricing numbers.
+  </div>
+
+  <section>
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <h2>What UpAhead actually is</h2>
+    </div>
+    <div class="col">
+      <p>A web app plus an iOS app, launched 10 January 2025 by Thomas Lentine, a University of South Carolina alumnus. Press from early 2025 puts it at roughly 500 registered users across 35 universities &mdash; so it is a comparable-stage indie product, not an incumbent. That matters: it is not out-executing you on resources, it has just made different bets.</p>
+      <p>The core promise is <em>syllabus to schedule in 30 seconds</em>. A student uploads, screenshots, or pastes a syllabus for each class; the app extracts graded assignments, due dates, the grading breakdown, class meeting times, and professor office hours, then merges every syllabus into one semester schedule the student can review and tweak. From there it runs three engines on top of that data: a grade calculator, an outbound reminder system, and calendar sync.</p>
+      <p>The strategic thing to notice is that <strong>the syllabus is the onboarding, not the product.</strong> LMS connection is secondary for them &mdash; they import your school&rsquo;s ICS calendar feed, which is shallow data. Your extension reads the gradebook and course content directly. You have better raw material and are doing less with it.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <h2>Full feature inventory</h2>
+    </div>
+    <div class="inventory">
+      <div class="inv-cell">
+        <h4>Intake</h4>
+        <ul>
+          <li><b>Multi-syllabus ingest</b> &mdash; upload, screenshot, or paste; each file parsed separately then merged into one schedule</li>
+          <li>Extracts <b>grading breakdown / category weights</b>, not just dates</li>
+          <li>Extracts <b>class meeting times</b> and <b>professor office hours</b></li>
+          <li><b>ICS feed import</b> from Canvas, Blackboard, Moodle, D2L</li>
+          <li>Everything is <b>reviewable and editable</b> post-parse</li>
+        </ul>
+      </div>
+      <div class="inv-cell">
+        <h4>Grades</h4>
+        <ul>
+          <li><b>Live weighted grade</b> per class</li>
+          <li><b>Target-score projection</b> &mdash; the score needed on remaining work to land a chosen grade</li>
+          <li><b>Circular grade dial</b> showing percentage and letter grade</li>
+          <li>Per-category breakdown of how each assignment type contributes</li>
+        </ul>
+      </div>
+      <div class="inv-cell">
+        <h4>Output &amp; reminders</h4>
+        <ul>
+          <li><b>SMS reminders</b> ahead of each due date</li>
+          <li><b>Daily SMS / email digest</b> of what matters</li>
+          <li><b>Push to Google, Apple, Outlook</b> calendars as one source of truth</li>
+        </ul>
+      </div>
+      <div class="inv-cell">
+        <h4>Daily-use UX</h4>
+        <ul>
+          <li><b>Daily view</b> &mdash; overdue work, upcoming tasks, streaks</li>
+          <li><b>To&nbsp;Do / Completed</b> tabs</li>
+          <li><b>Swipe</b> to complete, edit, or delete</li>
+          <li><b>Confetti</b> on completion</li>
+          <li>Sorted by what is due next</li>
+        </ul>
+      </div>
+      <div class="inv-cell">
+        <h4>Parent / supporter layer</h4>
+        <ul>
+          <li>Student <b>invites a parent by email</b>; parent sees only what is shared</li>
+          <li><b>Three independent toggles</b>: due dates &amp; progress, course schedule, grades</li>
+          <li>Grades require an <b>extra confirmation step</b></li>
+          <li><b>Revocable anytime</b> from the student profile</li>
+          <li>Framed as <b>FERPA-aligned, consent-driven</b></li>
+          <li>A <b>&ldquo;Gift + Dashboard&rdquo;</b> plan &mdash; the parent buys</li>
+        </ul>
+      </div>
+      <div class="inv-cell">
+        <h4>Account &amp; commercial</h4>
+        <ul>
+          <li>Sign in with <b>Apple, Google, Microsoft, or email</b></li>
+          <li>Free to start; paid tier reported at <b>$9.99/mo</b></li>
+          <li>Audience-specific landing pages: <b>/students</b>, <b>/parents</b>, <b>/pricing</b></li>
+          <li>Programmatic <b>/testimonials/*</b> SEO pages</li>
+          <li>iOS app alongside the web app</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <h2>Where each of you wins</h2>
+    </div>
+    <div class="col" style="margin-bottom:1.75rem">
+      <p>Read the middle column as your current state per your own store listing and site copy. Where you are marked partial, the capability exists but is capped by the extension architecture.</p>
+    </div>
+    <div class="scroller">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Capability</th>
+            <th scope="col">Brightspace Tracker</th>
+            <th scope="col">UpAhead</th>
+            <th scope="col">Who wins</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Zero-entry LMS import</td>
+            <td><span class="chip c-yes">deep — reads Brightspace directly</span></td>
+            <td><span class="chip c-part">shallow — ICS feed only</span></td>
+            <td>You, decisively</td>
+          </tr>
+          <tr>
+            <td>Auto-detects the school, no config</td>
+            <td><span class="chip c-yes">yes</span></td>
+            <td><span class="chip c-no">manual connect</span></td>
+            <td>You</td>
+          </tr>
+          <tr>
+            <td>Quizzes, exams, labs as distinct types</td>
+            <td><span class="chip c-yes">yes</span></td>
+            <td><span class="chip c-part">generic assignments</span></td>
+            <td>You</td>
+          </tr>
+          <tr>
+            <td>Gradescope import</td>
+            <td><span class="chip c-yes">one click</span></td>
+            <td><span class="chip c-no">none</span></td>
+            <td>You &mdash; and it&rsquo;s underused in your marketing</td>
+          </tr>
+          <tr>
+            <td>Syllabus PDF parsing</td>
+            <td><span class="chip c-part">dates only</span></td>
+            <td><span class="chip c-yes">dates + weights + meeting times</span></td>
+            <td>Them</td>
+          </tr>
+          <tr>
+            <td>Weighted grade + target-score projection</td>
+            <td><span class="chip c-no">none</span></td>
+            <td><span class="chip c-yes">core feature</span></td>
+            <td>Them &mdash; your biggest gap</td>
+          </tr>
+          <tr>
+            <td>Reminders that fire with the browser closed</td>
+            <td><span class="chip c-no">Chrome notifications only</span></td>
+            <td><span class="chip c-yes">SMS + email, server-side</span></td>
+            <td>Them</td>
+          </tr>
+          <tr>
+            <td>Calendar sync out (Google / Apple / Outlook)</td>
+            <td><span class="chip c-no">none</span></td>
+            <td><span class="chip c-yes">all three</span></td>
+            <td>Them</td>
+          </tr>
+          <tr>
+            <td>Works on phone</td>
+            <td><span class="chip c-no">desktop Chrome only</span></td>
+            <td><span class="chip c-yes">iOS app + web</span></td>
+            <td>Them, structurally</td>
+          </tr>
+          <tr>
+            <td>Parent / supporter visibility</td>
+            <td><span class="chip c-no">none</span></td>
+            <td><span class="chip c-yes">granular consent + gift plan</span></td>
+            <td>Them</td>
+          </tr>
+          <tr>
+            <td>Retention mechanics (streaks, completion ritual)</td>
+            <td><span class="chip c-part">4 views, no loop</span></td>
+            <td><span class="chip c-yes">daily view, streaks, confetti</span></td>
+            <td>Them</td>
+          </tr>
+          <tr>
+            <td>Privacy posture</td>
+            <td><span class="chip c-yes">no ads, no data collection</span></td>
+            <td><span class="chip c-part">account-based, opt-in sharing</span></td>
+            <td>You &mdash; but see rec 01</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <h2>The build order</h2>
+    </div>
+    <div class="col" style="margin-bottom:2rem">
+      <p>Ranked, and the ranking is the argument: each item is chosen partly because it unlocks the ones below it. Effort assumes you are working solo on an existing MV3 extension.</p>
+    </div>
+
+    <div class="recs">
+
+      <article class="rec">
+        <div class="rec-top">
+          <span class="rank">01</span>
+          <div class="rec-title">
+            <h3>A synced account behind the extension</h3>
+            <div class="tags">
+              <span class="tag"><b>Effort</b> large</span>
+              <span class="tag"><b>Impact</b> unlocks 03, 04, 06, 07</span>
+              <span class="tag"><b>Type</b> architecture</span>
+            </div>
+          </div>
+        </div>
+        <div class="rec-body">
+          <div>
+            <h5>The move</h5>
+            <p>Demote the extension from database to client. It keeps doing what only it can do &mdash; scrape the authenticated Brightspace session &mdash; and pushes a normalized copy of courses, items, due dates, and grades to a server. The server becomes what everything else hangs off.</p>
+            <p>This is the whole ballgame. Every remaining gap in the matrix above is downstream of not having a server-side copy of the data: no SMS, no email digest, no live calendar feed, no phone access, no parent view, no streaks that survive a reinstall.</p>
+          </div>
+          <div>
+            <h5>Watch for</h5>
+            <ul>
+              <li><strong>It costs you your best marketing line.</strong> &ldquo;No data collection&rdquo; stops being literally true. Do not fudge it &mdash; reframe as opt-in: local-only stays the default, sync is a switch the student flips to get reminders, and say plainly what leaves the browser.</li>
+              <li>Sync one direction first (extension → server). Bidirectional edit merging is a later problem, not a launch problem.</li>
+              <li>Store the minimum: item titles, types, due dates, points, weights. No page content, no PDFs, no session cookies server-side, ever.</li>
+              <li>MV3 service workers get killed aggressively &mdash; drive sync from <code>chrome.alarms</code> plus a scrape on Brightspace page visits, not a long-lived timer.</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <article class="rec">
+        <div class="rec-top">
+          <span class="rank">02</span>
+          <div class="rec-title">
+            <h3>Weighted grade engine with target-score projection</h3>
+            <div class="tags">
+              <span class="tag"><b>Effort</b> medium</span>
+              <span class="tag"><b>Impact</b> highest single feature</span>
+              <span class="tag"><b>Type</b> feature</span>
+            </div>
+          </div>
+        </div>
+        <div class="rec-body">
+          <div>
+            <h5>The move</h5>
+            <p>&ldquo;What do I need on the final to keep my A?&rdquo; is the question students actually open a tracker to answer, and UpAhead built its whole grade experience around it: a live weighted grade, a per-category contribution breakdown, and a solved-for target score.</p>
+            <p><strong>You can do this strictly better than they can.</strong> Their grades are whatever the student typed in or whatever a syllabus implied. Yours come out of the real Brightspace gradebook &mdash; actual scores, actual category weights, actual dropped-lowest rules. Same feature, no data entry, and correct.</p>
+          </div>
+          <div>
+            <h5>Watch for</h5>
+            <ul>
+              <li>Pull grade items and category weights from the gradebook while the student is signed in; fall back to weights parsed from the syllabus when a professor hasn&rsquo;t configured them.</li>
+              <li>Handle the ugly cases honestly &mdash; ungraded items, extra credit, drop-lowest, unweighted point totals. Show the assumption you made rather than a confidently wrong number.</li>
+              <li>Copy the circular dial with percentage <em>and</em> letter grade. It is a small piece of UI doing a lot of work, and letter grade is what students actually think in.</li>
+              <li>Ship the projection as a slider, not a form. Dragging a target and watching required scores move is the demo that sells the product.</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <article class="rec">
+        <div class="rec-top">
+          <span class="rank">03</span>
+          <div class="rec-title">
+            <h3>A published ICS subscription URL per student</h3>
+            <div class="tags">
+              <span class="tag"><b>Effort</b> small</span>
+              <span class="tag"><b>Impact</b> high</span>
+              <span class="tag"><b>Type</b> feature</span>
+            </div>
+          </div>
+        </div>
+        <div class="rec-body">
+          <div>
+            <h5>The move</h5>
+            <p>UpAhead advertises push into Google, Apple, and Outlook. You do not need three OAuth integrations to match that &mdash; you need one authenticated ICS endpoint per user. All three clients subscribe to ICS, and a subscription stays live, so every scrape silently updates the student&rsquo;s real calendar.</p>
+            <p>Best effort-to-payoff ratio on this list by a wide margin. It is a serialization function and a signed URL, and it neutralizes an entire row of their feature table.</p>
+          </div>
+          <div>
+            <h5>Watch for</h5>
+            <ul>
+              <li>Make the URL an unguessable token, revocable and rotatable from settings &mdash; calendar subscriptions cannot send auth headers, so the URL <em>is</em> the credential.</li>
+              <li>Stable <code>UID</code> per LMS item so edits update the event instead of duplicating it.</li>
+              <li>Timed items as timed events, all-day deadlines as all-day; set <code>VALARM</code> defaults; carry the course code in the title so it reads well in a crowded week view.</li>
+              <li>Google refreshes subscribed calendars slowly and on its own schedule. Say so in the UI before someone files a bug.</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <article class="rec">
+        <div class="rec-top">
+          <span class="rank">04</span>
+          <div class="rec-title">
+            <h3>Outbound reminders &mdash; email first, SMS later</h3>
+            <div class="tags">
+              <span class="tag"><b>Effort</b> small (email) / medium (SMS)</span>
+              <span class="tag"><b>Impact</b> high</span>
+              <span class="tag"><b>Type</b> feature</span>
+            </div>
+          </div>
+        </div>
+        <div class="rec-body">
+          <div>
+            <h5>The move</h5>
+            <p>Their reminders reach a student who has not opened anything; a Chrome notification only reaches one who already has Chrome running. Match the pattern with a daily digest plus per-item lead-time reminders, both server-side.</p>
+            <p>Do email first. It is a cron job and a template, needs no phone number, and covers most of the value. SMS is the upgrade, and it is the part with real friction.</p>
+          </div>
+          <div>
+            <h5>Watch for</h5>
+            <ul>
+              <li><strong>US A2P SMS requires 10DLC brand and campaign registration</strong> &mdash; real paperwork, real per-message cost, and carrier filtering if you skip it. Budget weeks, not an afternoon. This is likely why their SMS is a paid-tier feature, and it should be yours too.</li>
+              <li>Let students choose lead times per item type. An exam wants a week; a discussion post wants an evening.</li>
+              <li>One digest at a chosen hour beats per-item pings. Over-notification is the fastest route to an uninstall.</li>
+              <li>Include a genuine one-click unsubscribe in every send.</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <article class="rec">
+        <div class="rec-top">
+          <span class="rank">05</span>
+          <div class="rec-title">
+            <h3>Upgrade syllabus parsing from dates to structure</h3>
+            <div class="tags">
+              <span class="tag"><b>Effort</b> medium</span>
+              <span class="tag"><b>Impact</b> feeds 02</span>
+              <span class="tag"><b>Type</b> feature</span>
+            </div>
+          </div>
+        </div>
+        <div class="rec-body">
+          <div>
+            <h5>The move</h5>
+            <p>You already scrape syllabus PDFs for deadlines. UpAhead pulls three more things out of the same document: the <strong>grading breakdown with category weights</strong>, <strong>class meeting times</strong>, and <strong>professor office hours</strong>. The weights are the important one &mdash; they are what makes recommendation 02 work when a professor never configured the Brightspace gradebook, which is often.</p>
+            <p>Meeting times and office hours are cheap once you are already parsing, and they turn the product from a deadline list into the thing a student opens to answer &ldquo;where am I supposed to be, and when can I get help.&rdquo;</p>
+          </div>
+          <div>
+            <h5>Watch for</h5>
+            <ul>
+              <li>Also accept screenshots and pasted text, not just PDFs. Plenty of syllabi live inside a Brightspace content page, and your extension can grab that page for free.</li>
+              <li>Always show a review-and-edit step. Their copy leans on this too, and it converts a parsing miss from a broken product into a five-second correction.</li>
+              <li>Reconcile against what you scraped from the LMS rather than importing blind &mdash; dedupe on title similarity plus date proximity, and prefer the LMS date when they disagree.</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <article class="rec">
+        <div class="rec-top">
+          <span class="rank">06</span>
+          <div class="rec-title">
+            <h3>Parent view with granular, revocable consent</h3>
+            <div class="tags">
+              <span class="tag"><b>Effort</b> medium</span>
+              <span class="tag"><b>Impact</b> new revenue channel</span>
+              <span class="tag"><b>Type</b> feature + business model</span>
+            </div>
+          </div>
+        </div>
+        <div class="rec-body">
+          <div>
+            <h5>The move</h5>
+            <p>The most commercially interesting thing on their site, and the least obvious. The student invites a parent by email, then controls three independent switches &mdash; due dates and progress, course schedule, grades &mdash; with grades behind an extra confirmation and everything revocable from the profile. They wrap it in FERPA-aligned, consent-driven language and sell a &ldquo;Gift + Dashboard&rdquo; plan where the <em>parent</em> pays.</p>
+            <p>That last part solves the hardest problem in student software: students are broke and parents are not. A parent buying a semester for their kid is a far easier sale than a student buying it for themselves.</p>
+          </div>
+          <div>
+            <h5>Watch for</h5>
+            <ul>
+              <li>Consent must be genuinely student-held and revocable, and the parent must never see more than the switches allow. Copy their structure closely &mdash; it is well designed and the failure mode here is reputational.</li>
+              <li>FERPA binds institutions, not you, but the framing is doing real work with parents. Do not overclaim compliance; describe the mechanism instead.</li>
+              <li>Requires recommendation 01 and a small web surface. This is the point at which you are no longer only a Chrome extension.</li>
+              <li>Add the audience landing page to match &mdash; a <code>/parents</code> page is how this gets found at all.</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <article class="rec">
+        <div class="rec-top">
+          <span class="rank">07</span>
+          <div class="rec-title">
+            <h3>The daily loop: today view, streaks, completion ritual</h3>
+            <div class="tags">
+              <span class="tag"><b>Effort</b> small</span>
+              <span class="tag"><b>Impact</b> retention</span>
+              <span class="tag"><b>Type</b> UX</span>
+            </div>
+          </div>
+        </div>
+        <div class="rec-body">
+          <div>
+            <h5>The move</h5>
+            <p>You ship four views; they ship one opinionated default. Their daily view leads with overdue work, then upcoming, with a streak counter &mdash; plus To&nbsp;Do / Completed tabs, swipe to complete, and confetti on finishing. Their release notes lead with the confetti, which tells you what they think retains people.</p>
+            <p>A tracker that only shows deadlines is consulted twice a semester. A tracker with a satisfying daily check-in gets opened every morning, and habit is what makes a semester license renew.</p>
+          </div>
+          <div>
+            <h5>Watch for</h5>
+            <ul>
+              <li>Make Today the default view, not one of four equals. Overdue at the top, in the alarm color.</li>
+              <li>Completion needs to feel like something &mdash; a real animation, a visible count moving. This is the cheapest feature on the list and punches above its weight.</li>
+              <li>Streaks should count &ldquo;checked in&rdquo; days, not &ldquo;completed everything&rdquo; days. Punishing a heavy week is how you lose the habit you just built.</li>
+              <li>Keep the other three views for people who found them. This is about the default, not about removal.</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <article class="rec">
+        <div class="rec-top">
+          <span class="rank">08</span>
+          <div class="rec-title">
+            <h3>Fix the pricing page contradiction, then borrow their page structure</h3>
+            <div class="tags">
+              <span class="tag"><b>Effort</b> tiny</span>
+              <span class="tag"><b>Impact</b> conversion</span>
+              <span class="tag"><b>Type</b> marketing</span>
+            </div>
+          </div>
+        </div>
+        <div class="rec-body">
+          <div>
+            <h5>The move</h5>
+            <p>Your own store and site copy currently says both <em>&ldquo;renews each semester &mdash; cancel anytime&rdquo;</em> and <em>&ldquo;one payment, license never expires.&rdquo;</em> Those are different products. A student reading both does not know what they are buying, and ambiguity at the price is where checkouts die. Pick one and say it once.</p>
+            <p>Then take their site shape: a dedicated page per audience &mdash; <code>/students</code>, <code>/parents</code>, <code>/pricing</code> &mdash; each written to one reader with one ask, rather than a single homepage trying to address everyone.</p>
+          </div>
+          <div>
+            <h5>Watch for</h5>
+            <ul>
+              <li>Your semester license is arguably the better model for a single-LMS tool &mdash; it matches how students actually think about time. Lean into it as a contrast with their monthly subscription rather than converting to match.</li>
+              <li>Lead with Gradescope import somewhere prominent. It is a genuine differentiator they have no answer to, and it is currently buried.</li>
+              <li>Skip the programmatic <code>/testimonials/*</code> pattern &mdash; see below.</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <span class="sec-num">05</span>
+      <h2>What not to copy</h2>
+    </div>
+    <div class="avoid">
+      <div class="avoid-item">
+        <h4>Multi-LMS sprawl</h4>
+        <p>Supporting Canvas, Blackboard, Moodle, and D2L is why their integration is a shallow ICS feed &mdash; breadth forced them to the lowest common denominator. Your entire advantage is Brightspace depth and &ldquo;it auto-detects your school.&rdquo; Going multi-LMS trades a real moat for a feature checkbox.</p>
+      </div>
+      <div class="avoid-item">
+        <h4>Programmatic testimonial SEO</h4>
+        <p>Their <code>/testimonials/*</code> URLs carry slugs about micro-investing &mdash; content unrelated to the product, generated at scale. That pattern is thin-content risk with search engines and reads badly to any student who lands on one. Do not import it.</p>
+      </div>
+      <div class="avoid-item">
+        <h4>&ldquo;AI&rdquo; as the headline</h4>
+        <p>Their App Store name leads with &ldquo;AI Assignment Tracker.&rdquo; Your promise is stronger and more concrete: it already knows your classes because it reads your actual Brightspace. Sell the outcome, not the technique &mdash; the technique is table stakes now.</p>
+      </div>
+      <div class="avoid-item">
+        <h4>Monthly subscription for a semester-shaped product</h4>
+        <p>$9.99/mo bills students through summer, when they use nothing. Your semester license fits the actual usage pattern and is easier to justify at the point of sale. Keep it &mdash; just state it unambiguously.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <span class="sec-num">06</span>
+      <h2>One architectural warning</h2>
+    </div>
+    <div class="col">
+      <p>Everything above assumes you keep reading Brightspace through the student&rsquo;s own authenticated browser session. Do not be tempted toward the D2L Valence API as a &ldquo;proper&rdquo; replacement: it requires per-institution app keys issued by each school&rsquo;s Brightspace administrator, which is not obtainable at indie scale across hundreds of universities. The extension approach is not a hack you should outgrow &mdash; it is the only path to &ldquo;works at any school, day one,&rdquo; and it is precisely what UpAhead cannot replicate.</p>
+      <p>The correct shape, then, is a thin server that never holds a Brightspace credential and never talks to Brightspace itself. The extension is the only thing with access; the server only ever receives already-extracted, normalized items. That keeps the privacy story defensible after recommendation 01, and it keeps the trust boundary somewhere you can describe in one sentence to a student.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <span class="sec-num">07</span>
+      <h2>Sources</h2>
+    </div>
+    <ol class="sources">
+      <li><span class="n">01</span><a href="https://upahead.online/">upahead.online &mdash; Syllabus to Schedule in Seconds for College Students</a></li>
+      <li><span class="n">02</span><a href="https://upahead.online/students">upahead.online/students &mdash; College Assignment Tracker for Students</a></li>
+      <li><span class="n">03</span><a href="https://upahead.online/parents">upahead.online/parents &mdash; Stay in the Loop on Your College Student, Without Hovering</a></li>
+      <li><span class="n">04</span><a href="https://upahead.online/pricing">upahead.online/pricing &mdash; UpAhead Assignment Tracker pricing</a></li>
+      <li><span class="n">05</span><a href="https://apps.apple.com/us/app/upahead-ai-assignment-tracker/id6754220594">App Store &mdash; UpAhead: AI Assignment Tracker (description and release notes)</a></li>
+      <li><span class="n">06</span><a href="https://www.dailygamecock.com/article/2025/02/usc-alumnus-turns-side-hustle-into-a-successful-startup-helping-college-students-stay-organized">The Daily Gamecock &mdash; USC alumnus turns side hustle into a startup (founder, launch date, user numbers)</a></li>
+      <li><span class="n">07</span><a href="https://www.brightspacetracker.com/">brightspacetracker.com &mdash; Brightspace Tracker</a></li>
+      <li><span class="n">08</span><a href="https://chromewebstore.google.com/detail/brightspace-assignment-tr/ipljilgacjiienakihbipcefgckmaaek">Chrome Web Store &mdash; Brightspace Assignment Tracker</a></li>
+    </ol>
+  </section>
+
+  <footer>
+    Reconstructed from search-result content &mdash; direct page access was blocked by network policy. Verify pricing before acting on it.
+  </footer>
+
+</div>
