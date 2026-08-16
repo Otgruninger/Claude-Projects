@@ -1,0 +1,897 @@
+<title>Brightspace Tracker — Next Release Build Plan</title>
+<style>
+  :root {
+    --paper:      #F1F3F6;
+    --surface:    #FFFFFF;
+    --surface-2:  #E7EAEF;
+    --ink:        #171A21;
+    --ink-soft:   #38404E;
+    --muted:      #5D6575;
+    --rule:       #D2D7E0;
+    --rule-soft:  #E2E6EC;
+    --accent:     #A9530F;
+    --accent-bg:  #F6E9DC;
+    --have:       #0D6155;
+    --have-bg:    #DDEBE8;
+    --gap:        #8B2D44;
+    --gap-bg:     #F1DFE3;
+    --shadow:     0 1px 2px rgba(23,26,33,.05), 0 8px 24px -16px rgba(23,26,33,.18);
+
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", "Times New Roman", serif;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+
+    --fs-xs: .75rem;
+    --fs-sm: .875rem;
+    --fs-base: 1.0625rem;
+    --fs-lg: 1.1875rem;
+    --fs-xl: 1.5rem;
+    --fs-2xl: 2rem;
+    --fs-3xl: 2.75rem;
+
+    --measure: 68ch;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:      #13161C;
+      --surface:    #1B1F27;
+      --surface-2:  #242935;
+      --ink:        #E7EAF0;
+      --ink-soft:   #C3C9D4;
+      --muted:      #939CAB;
+      --rule:       #2E3542;
+      --rule-soft:  #262C37;
+      --accent:     #E09A5B;
+      --accent-bg:  #33251A;
+      --have:       #55BFAD;
+      --have-bg:    #16302C;
+      --gap:        #E08C9F;
+      --gap-bg:     #332025;
+      --shadow:     0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.7);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper:      #13161C;
+    --surface:    #1B1F27;
+    --surface-2:  #242935;
+    --ink:        #E7EAF0;
+    --ink-soft:   #C3C9D4;
+    --muted:      #939CAB;
+    --rule:       #2E3542;
+    --rule-soft:  #262C37;
+    --accent:     #E09A5B;
+    --accent-bg:  #33251A;
+    --have:       #55BFAD;
+    --have-bg:    #16302C;
+    --gap:        #E08C9F;
+    --gap-bg:     #332025;
+    --shadow:     0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.7);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: var(--fs-base);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 74rem; margin: 0 auto; padding: 0 1.5rem 6rem; }
+  .col { max-width: var(--measure); }
+
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+  code {
+    font-family: var(--mono);
+    font-size: .88em;
+    background: var(--surface-2);
+    padding: .1em .35em;
+    border-radius: 2px;
+    color: var(--ink);
+  }
+
+  /* ---------- masthead ---------- */
+
+  .masthead {
+    padding: 4.5rem 0 2.5rem;
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .kicker {
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  h1 {
+    font-family: var(--serif);
+    font-size: var(--fs-3xl);
+    line-height: 1.08;
+    font-weight: 600;
+    letter-spacing: -.015em;
+    text-wrap: balance;
+    margin: 0;
+    max-width: 26ch;
+  }
+
+  .standfirst {
+    font-size: var(--fs-lg);
+    line-height: 1.55;
+    color: var(--ink-soft);
+    margin: 0;
+    max-width: 62ch;
+  }
+
+  .masthead-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem 1.75rem;
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    color: var(--muted);
+    letter-spacing: .04em;
+  }
+
+  /* ---------- callouts ---------- */
+
+  .note {
+    margin: 2.5rem 0 0;
+    padding: 1.125rem 1.375rem;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent);
+    border-radius: 3px;
+    font-size: var(--fs-sm);
+    line-height: 1.6;
+    color: var(--ink-soft);
+    max-width: var(--measure);
+  }
+  .note strong { color: var(--ink); font-weight: 600; }
+  .note.alarm { border-left-color: var(--gap); }
+
+  /* ---------- sections ---------- */
+
+  section { padding-top: 4rem; }
+
+  .sec-head {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 1.75rem;
+    padding-bottom: .625rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .sec-num {
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    color: var(--accent);
+    letter-spacing: .1em;
+    flex: none;
+    padding-top: .35em;
+  }
+
+  h2 {
+    font-family: var(--serif);
+    font-size: var(--fs-2xl);
+    line-height: 1.15;
+    font-weight: 600;
+    letter-spacing: -.01em;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  p { margin: 0 0 1rem; }
+  .col > p:last-child { margin-bottom: 0; }
+
+  /* ---------- scope split ---------- */
+
+  .split {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+    gap: 1rem;
+  }
+  .split-col {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 1.25rem 1.375rem 1.5rem;
+  }
+  .split-col.in  { border-top: 3px solid var(--have); }
+  .split-col.out { border-top: 3px solid var(--muted); }
+
+  .split-col h3 {
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin: 0 0 .25rem;
+  }
+  .split-col.in h3  { color: var(--have); }
+  .split-col.out h3 { color: var(--muted); }
+
+  .split-col .why {
+    font-size: var(--fs-sm);
+    color: var(--muted);
+    margin: 0 0 1rem;
+    line-height: 1.5;
+  }
+
+  .split-col ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: .625rem;
+  }
+  .split-col li {
+    font-size: var(--fs-sm);
+    line-height: 1.5;
+    color: var(--ink-soft);
+    padding-left: 1.4em;
+    position: relative;
+  }
+  .split-col li b { color: var(--ink); font-weight: 600; }
+  .split-col.in li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--have);
+    font-family: var(--mono);
+  }
+  .split-col.out li::before {
+    content: "·";
+    position: absolute;
+    left: .35em;
+    color: var(--muted);
+    font-weight: 700;
+  }
+
+  /* ---------- phases ---------- */
+
+  .phases { display: flex; flex-direction: column; gap: 1.25rem; }
+
+  .phase {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .phase-top {
+    display: flex;
+    gap: 1.125rem;
+    align-items: flex-start;
+    padding: 1.25rem 1.375rem;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+
+  .pnum {
+    font-family: var(--mono);
+    font-size: var(--fs-xl);
+    font-weight: 600;
+    line-height: 1;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+    flex: none;
+    padding-top: .1em;
+    min-width: 3ch;
+  }
+
+  .phase-title { display: flex; flex-direction: column; gap: .5rem; flex: 1; min-width: 0; }
+
+  .phase-title h3 {
+    margin: 0;
+    font-size: var(--fs-lg);
+    font-weight: 650;
+    line-height: 1.3;
+    letter-spacing: -.01em;
+  }
+
+  .tags { display: flex; flex-wrap: wrap; gap: .4rem; }
+  .tag {
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    letter-spacing: .05em;
+    padding: .2em .5em;
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    color: var(--muted);
+    background: var(--paper);
+  }
+  .tag b { color: var(--ink-soft); font-weight: 600; }
+  .tag.crit { border-color: var(--gap); color: var(--gap); background: var(--gap-bg); }
+
+  .phase-body { padding: 1.25rem 1.375rem; display: flex; flex-direction: column; gap: 1.25rem; }
+
+  .goal {
+    font-size: var(--fs-sm);
+    line-height: 1.6;
+    color: var(--ink-soft);
+    margin: 0;
+    max-width: 78ch;
+  }
+  .goal strong { color: var(--ink); font-weight: 600; }
+
+  .block h5 {
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    margin: 0 0 .5rem;
+  }
+
+  .work {
+    margin: 0;
+    padding-left: 1.15em;
+    font-size: var(--fs-sm);
+    line-height: 1.6;
+    color: var(--ink-soft);
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+  }
+  .work li::marker { color: var(--muted); }
+  .work strong { color: var(--ink); font-weight: 600; }
+
+  .accept {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: .45rem;
+  }
+  .accept li {
+    font-size: var(--fs-sm);
+    line-height: 1.5;
+    color: var(--ink-soft);
+    padding-left: 1.6em;
+    position: relative;
+  }
+  .accept li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: .38em;
+    width: .8em;
+    height: .8em;
+    border: 1.5px solid var(--rule);
+    border-radius: 2px;
+    background: var(--paper);
+  }
+
+  .risk {
+    background: var(--paper);
+    border-left: 2px solid var(--gap);
+    padding: .75rem 1rem;
+    border-radius: 0 3px 3px 0;
+  }
+  .risk h5 { color: var(--gap); }
+  .risk p { margin: 0; font-size: var(--fs-sm); line-height: 1.55; color: var(--ink-soft); }
+  .risk strong { color: var(--ink); font-weight: 600; }
+
+  @media (min-width: 58rem) {
+    .two-up { display: grid; grid-template-columns: 1.35fr 1fr; gap: 1.5rem; align-items: start; }
+  }
+
+  /* ---------- checklist ---------- */
+
+  .checklist {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 1.375rem 1.5rem 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+    gap: 1.5rem 2rem;
+  }
+  .checklist-group h4 {
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    margin: 0 0 .625rem;
+    padding-bottom: .375rem;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+
+  /* ---------- later track ---------- */
+
+  .later {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: 1rem;
+  }
+  .later-item {
+    border: 1px dashed var(--rule);
+    border-radius: 4px;
+    padding: 1.125rem 1.25rem;
+    background: transparent;
+  }
+  .later-item h4 {
+    margin: 0 0 .1rem;
+    font-size: var(--fs-sm);
+    font-weight: 650;
+    color: var(--ink);
+  }
+  .later-item .rel {
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    color: var(--accent);
+    letter-spacing: .05em;
+    display: block;
+    margin-bottom: .5rem;
+  }
+  .later-item p {
+    margin: 0;
+    font-size: var(--fs-sm);
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+
+  footer {
+    margin-top: 4rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--rule);
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    letter-spacing: .04em;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  @media (max-width: 40rem) {
+    :root { --fs-3xl: 2rem; --fs-2xl: 1.5rem; }
+    .masthead { padding-top: 3rem; }
+    .sec-head { flex-direction: column; gap: .25rem; }
+    .sec-num { padding-top: 0; }
+    .phase-top { gap: .75rem; }
+  }
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="kicker">Build plan &middot; next Chrome Web Store release</p>
+    <h1>Shipping the UpAhead gaps without a backend</h1>
+    <p class="standfirst">Four of the eight recommendations run entirely inside the extension. Four cannot exist without a server. Splitting the release along that line gets the headline feature out this cycle and keeps your store listing&rsquo;s privacy disclosure untouched &mdash; which is worth more than shipping everything at once.</p>
+    <div class="masthead-meta">
+      <span>Target: v-next, single CWS submission</span>
+      <span>Scope: extension-local only</span>
+      <span>Companion to the UpAhead teardown</span>
+    </div>
+  </header>
+
+  <div class="note">
+    <strong>Assumptions, since I couldn&rsquo;t read your source.</strong> The repo was empty and your site is blocked from this session, so this plan is written against the architecture your store listing implies: an MV3 extension that scrapes an authenticated Brightspace session, holds state in <code>chrome.storage</code>, renders four views, and already parses syllabus PDFs and imports Gradescope. Phase numbering and acceptance criteria are sound regardless; file-level specifics are not attempted. Push the extension source to the repo and I can turn this into a per-file task list.
+  </div>
+
+  <section>
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <h2>The scope decision</h2>
+    </div>
+    <div class="col" style="margin-bottom:1.75rem">
+      <p>Your store listing currently promises <em>no ads, no data collection.</em> That claim is true today because nothing leaves the browser, and it is a genuine differentiator against UpAhead&rsquo;s account model. The moment you add server sync you must update your Chrome Web Store data-use disclosures, and the claim in your listing copy stops being accurate.</p>
+      <p>That is not a reason to never build the backend &mdash; it is a reason not to bundle it into the same release as four features that need no such change. <strong>Ship the local tier now, keep the disclosure untouched, and make the backend its own release where the privacy rewrite gets handled deliberately instead of as a footnote.</strong></p>
+    </div>
+    <div class="split">
+      <div class="split-col in">
+        <h3>In &mdash; this release</h3>
+        <p class="why">Runs entirely in the extension. No new data leaves the browser, so no disclosure change.</p>
+        <ul>
+          <li><b>Weighted grade engine</b> with target-score projection &mdash; the headline feature, and the one you can do better than UpAhead because the numbers come from the real gradebook</li>
+          <li><b>Today view, streaks, completion ritual</b> &mdash; cheapest work here, biggest effect on renewal</li>
+          <li><b>Syllabus parsing upgrade</b> &mdash; category weights, meeting times, office hours</li>
+          <li><b>ICS export</b> &mdash; one-time download, no server required</li>
+        </ul>
+      </div>
+      <div class="split-col out">
+        <h3>Out &mdash; needs a backend</h3>
+        <p class="why">Each requires a server-side copy of the data. All four become straightforward once that exists.</p>
+        <ul>
+          <li><b>Sync account</b> &mdash; the architectural unlock the rest depend on</li>
+          <li><b>Email &amp; SMS reminders</b> &mdash; must fire with the browser closed</li>
+          <li><b>Live ICS subscription feed</b> &mdash; needs a hosted, authenticated URL</li>
+          <li><b>Parent dashboard</b> &mdash; needs accounts, a web surface, and consent state</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <h2>Build order</h2>
+    </div>
+    <div class="col" style="margin-bottom:2rem">
+      <p>Sequenced by dependency, not by value. Phase 0 looks like overhead and is the most important thing in this document: it is what makes the backend release cheap instead of a rewrite.</p>
+    </div>
+
+    <div class="phases">
+
+      <article class="phase">
+        <div class="phase-top">
+          <span class="pnum">00</span>
+          <div class="phase-title">
+            <h3>Normalize the item model and give everything a stable ID</h3>
+            <div class="tags">
+              <span class="tag"><b>Size</b> S–M</span>
+              <span class="tag"><b>Blocks</b> every phase below</span>
+              <span class="tag"><b>Ships</b> invisible</span>
+            </div>
+          </div>
+        </div>
+        <div class="phase-body">
+          <p class="goal">One internal shape for every tracked thing, whatever its origin &mdash; Brightspace assignment, quiz, exam, lab, Gradescope import, syllabus-derived row, or hand-added task. <strong>Every item carries a stable identity and a provenance field.</strong> Without this, completion state resets on re-scrape, ICS re-import duplicates events, dedupe is guesswork, and the sync release becomes a migration project.</p>
+          <div class="two-up">
+            <div class="block">
+              <h5>Work</h5>
+              <ul class="work">
+                <li>Define one item schema: <code>id</code>, <code>courseId</code>, <code>title</code>, <code>type</code>, <code>dueAt</code>, <code>points</code>, <code>weightCategory</code>, <code>source</code>, <code>completedAt</code>, <code>userEdited</code>.</li>
+                <li><strong>Stable ID scheme</strong> &mdash; derive from the LMS org unit and item id where available (<code>d2l:{orgUnitId}:{itemId}</code>), and from a hash of normalized title plus due date for syllabus-derived rows.</li>
+                <li>Keep <strong>user state in a separate keyspace</strong> from scraped data, joined by id, so a re-scrape never clobbers completions, edits, or dismissals.</li>
+                <li>Write a one-time migration from your current storage shape, and version the schema so the next one is easier.</li>
+                <li>Add a <code>source</code> value per item and surface it in the UI &mdash; students should be able to tell a scraped deadline from a syllabus-guessed one.</li>
+              </ul>
+            </div>
+            <div class="block">
+              <h5>Done when</h5>
+              <ul class="accept">
+                <li>Re-scraping a course preserves every completion and manual edit</li>
+                <li>The same assignment seen via Brightspace and via syllabus parsing resolves to one item, not two</li>
+                <li>Existing users&rsquo; data migrates with no visible loss on update</li>
+                <li>Schema version is stored and checked at load</li>
+              </ul>
+            </div>
+          </div>
+          <div class="risk">
+            <h5>Risk</h5>
+            <p>Migration bugs hit <em>existing paying users</em> on auto-update, silently. <strong>Write the migration defensively: keep a backup copy of pre-migration storage for one version</strong> so you can recover a user who reports losses, and test against real exported storage from a live install, not synthetic fixtures.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="phase">
+        <div class="phase-top">
+          <span class="pnum">01</span>
+          <div class="phase-title">
+            <h3>Grade scraper and calculation engine</h3>
+            <div class="tags">
+              <span class="tag"><b>Size</b> L</span>
+              <span class="tag"><b>Depends on</b> 00</span>
+              <span class="tag crit">highest value</span>
+            </div>
+          </div>
+        </div>
+        <div class="phase-body">
+          <p class="goal">Headless first &mdash; no UI in this phase. Extract the gradebook and compute a grade you can defend, with the calculation logic isolated and unit-tested so the messy cases are provable rather than hoped-for. <strong>The engine must be able to say &ldquo;I don&rsquo;t know&rdquo;</strong>; a confidently wrong GPA number is worse for you than an absent one.</p>
+          <div class="two-up">
+            <div class="block">
+              <h5>Work</h5>
+              <ul class="work">
+                <li>Scrape the student grades page per course: item name, category, points earned, points possible, category weights, item status (graded, ungraded, exempt, dropped), and the course&rsquo;s grading scheme for letter cutoffs.</li>
+                <li><strong>Prefer the JSON the page itself calls over DOM parsing</strong> where you can find it &mdash; it survives institutional theming that breaks selectors.</li>
+                <li>Implement both calculation modes: <strong>weighted</strong> (sum of category weight &times; category percentage) and <strong>points</strong> (total earned over total possible). Courses use one or the other; detect which.</li>
+                <li>Compute and expose <strong>two current grades</strong>: graded-items-only, and assuming zeros for everything ungraded. Students routinely confuse these and Brightspace shows only one.</li>
+                <li>Handle drop-lowest rules, exempt items, extra credit that pushes a category past 100%, and bonus categories.</li>
+                <li><strong>Target projection:</strong> given a target percentage, solve for the required average on remaining weight. Report unreachable targets plainly (&ldquo;you would need 112% &mdash; not reachable&rdquo;) rather than clamping silently.</li>
+                <li>Fall back to syllabus-derived weights (phase 03) when the professor never configured the gradebook, and mark the result as estimated.</li>
+              </ul>
+            </div>
+            <div class="block">
+              <h5>Done when</h5>
+              <ul class="accept">
+                <li>Computed grade matches Brightspace&rsquo;s own displayed calculated grade on every test course</li>
+                <li>Unit tests cover weighted, points, drop-lowest, exempt, extra-credit, and empty-gradebook cases</li>
+                <li>Engine returns an explicit <code>unknown</code> state rather than a number when inputs are incomplete</li>
+                <li>Target projection is correct against a hand-computed worked example</li>
+              </ul>
+            </div>
+          </div>
+          <div class="risk">
+            <h5>Risk</h5>
+            <p>This is a much more fragile scrape than due dates, and the failure mode is a wrong number a student makes decisions on. <strong>Build a self-check: compare your computed grade against the grade Brightspace displays, and if they disagree, hide the card and show a &ldquo;can&rsquo;t verify this course&rdquo; state</strong> instead of your number. That single guard converts your worst-case bug from a trust-destroying error into a graceful gap.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="phase">
+        <div class="phase-top">
+          <span class="pnum">02</span>
+          <div class="phase-title">
+            <h3>Grade UI &mdash; dial, breakdown, target slider</h3>
+            <div class="tags">
+              <span class="tag"><b>Size</b> M</span>
+              <span class="tag"><b>Depends on</b> 01</span>
+              <span class="tag"><b>Ships</b> the hero screenshot</span>
+            </div>
+          </div>
+        </div>
+        <div class="phase-body">
+          <p class="goal">The feature students will actually describe to their friends. UpAhead&rsquo;s release notes lead with their circular grade display, which tells you what they think sells it. <strong>The interaction, not the number, is the demo:</strong> dragging a target and watching required scores move is what makes this feel like a tool rather than a readout.</p>
+          <div class="two-up">
+            <div class="block">
+              <h5>Work</h5>
+              <ul class="work">
+                <li>Per-course <strong>circular dial showing percentage and letter grade</strong> together &mdash; students think in letters, and the letter is what makes it glanceable.</li>
+                <li><strong>Category breakdown</strong>: how much each assignment type contributes, and how much weight is still unspent.</li>
+                <li><strong>Target as a slider, not a form field.</strong> Drag to a target letter or percentage, see the required average on remaining work update live.</li>
+                <li>Show provenance inline &mdash; a quiet label for whether weights came from the gradebook or the syllabus.</li>
+                <li>Handle the empty and unknown states with real copy: no grades posted yet, gradebook not configured, couldn&rsquo;t verify.</li>
+                <li>Respect <code>prefers-reduced-motion</code> on the dial animation.</li>
+              </ul>
+            </div>
+            <div class="block">
+              <h5>Done when</h5>
+              <ul class="accept">
+                <li>Dial renders correctly at every state including 0%, &gt;100%, and unknown</li>
+                <li>Slider updates required-score figures without a reload</li>
+                <li>Estimated-weight courses are visually distinct from verified ones</li>
+                <li>New store screenshots captured from this view</li>
+              </ul>
+            </div>
+          </div>
+          <div class="risk">
+            <h5>Risk</h5>
+            <p>Scope creep into a full grade-history graph. <strong>Not this release</strong> &mdash; it needs time-series data you are not yet storing, and it does not sell the feature the way the projection does.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="phase">
+        <div class="phase-top">
+          <span class="pnum">03</span>
+          <div class="phase-title">
+            <h3>Syllabus parsing: weights, meeting times, office hours</h3>
+            <div class="tags">
+              <span class="tag"><b>Size</b> M</span>
+              <span class="tag"><b>Feeds</b> 01</span>
+              <span class="tag crit">privacy fork</span>
+            </div>
+          </div>
+        </div>
+        <div class="phase-body">
+          <p class="goal">You already pull deadlines out of syllabus PDFs. UpAhead pulls three more things from the same document, and one of them &mdash; <strong>the grading breakdown with category weights</strong> &mdash; is what keeps phase 01 working for the very common case of a professor who never set up the Brightspace gradebook.</p>
+          <div class="two-up">
+            <div class="block">
+              <h5>Work</h5>
+              <ul class="work">
+                <li>Extract the <strong>grading table</strong>: category name to weight percentage. Validate that weights sum to ~100 and flag when they don&rsquo;t.</li>
+                <li>Extract <strong>class meeting times</strong> and <strong>professor office hours</strong> &mdash; cheap once you are already parsing, and they turn the product from a deadline list into a daily reference.</li>
+                <li>Accept <strong>pasted text and screenshots</strong>, not only PDF upload. Many syllabi live inside a Brightspace content page your extension can already read.</li>
+                <li><strong>Mandatory review-and-edit step</strong> before anything is committed. This converts a parsing miss from a broken product into a five-second correction, and UpAhead leans on it heavily.</li>
+                <li>Reconcile against LMS-scraped items: dedupe on normalized title similarity plus due-date proximity, and <strong>prefer the LMS date when they disagree</strong> &mdash; professors update Brightspace, not the PDF.</li>
+              </ul>
+            </div>
+            <div class="block">
+              <h5>Done when</h5>
+              <ul class="accept">
+                <li>Weights extracted from a real syllabus flow into the grade engine as estimated weights</li>
+                <li>Review step lets a student fix any field before commit</li>
+                <li>Re-importing the same syllabus produces no duplicates</li>
+                <li>Weight totals that don&rsquo;t sum to 100 are surfaced, not silently normalized</li>
+              </ul>
+            </div>
+          </div>
+          <div class="risk">
+            <h5>Risk</h5>
+            <p><strong>Check where your parsing actually runs.</strong> If syllabus text is already being sent to an API for extraction, then content is leaving the browser today and the &ldquo;no data collection&rdquo; line in your listing needs revisiting <em>this release</em>, independent of everything else here. If parsing is local, keep it local &mdash; it is a real differentiator and MV3 forbids remote code anyway.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="phase">
+        <div class="phase-top">
+          <span class="pnum">04</span>
+          <div class="phase-title">
+            <h3>Today view, streaks, completion ritual</h3>
+            <div class="tags">
+              <span class="tag"><b>Size</b> S</span>
+              <span class="tag"><b>Depends on</b> 00</span>
+              <span class="tag"><b>Drives</b> renewal</span>
+            </div>
+          </div>
+        </div>
+        <div class="phase-body">
+          <p class="goal">You ship four views as equals; UpAhead ships one opinionated default. A tracker consulted twice a semester does not get renewed &mdash; <strong>a tracker with a satisfying daily check-in does.</strong> Cheapest phase here and the one most directly tied to a semester license renewing.</p>
+          <div class="two-up">
+            <div class="block">
+              <h5>Work</h5>
+              <ul class="work">
+                <li><strong>Make Today the default view</strong>, keeping the other three available. Sections in order: overdue (in the alarm color), due today, due this week, then everything else.</li>
+                <li><strong>Streak counts days checked in, not days cleared.</strong> Punishing a heavy week is how you destroy the habit you just built. Store the local date, handle timezone changes, and don&rsquo;t reset on a single miss without a grace day.</li>
+                <li>To&nbsp;Do / Completed tabs, and a completion interaction that <em>feels</em> like something &mdash; a real animation, a count visibly moving.</li>
+                <li>Completion state persists across re-scrape via the phase 00 keyspace split.</li>
+                <li>Keyboard-accessible completion, with visible focus states.</li>
+              </ul>
+            </div>
+            <div class="block">
+              <h5>Done when</h5>
+              <ul class="accept">
+                <li>Opening the extension lands on Today with overdue work first</li>
+                <li>Streak survives browser restart, timezone change, and re-scrape</li>
+                <li>Completing an item is reversible and animates</li>
+                <li>All three other views still reachable in one click</li>
+              </ul>
+            </div>
+          </div>
+          <div class="risk">
+            <h5>Risk</h5>
+            <p>Low. The only real trap is a streak that resets unfairly and reads as punitive &mdash; test the day-boundary and timezone cases specifically, since they will hit every user eventually and you will never reproduce them by hand.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="phase">
+        <div class="phase-top">
+          <span class="pnum">05</span>
+          <div class="phase-title">
+            <h3>ICS export</h3>
+            <div class="tags">
+              <span class="tag"><b>Size</b> S</span>
+              <span class="tag"><b>Depends on</b> 00</span>
+              <span class="tag"><b>Preview of</b> the live feed</span>
+            </div>
+          </div>
+        </div>
+        <div class="phase-body">
+          <p class="goal">The no-backend half of the calendar story. A generated <code>.ics</code> file the student imports once into Google, Apple, or Outlook. It is a snapshot rather than a live subscription &mdash; say so in the UI &mdash; but it closes most of the practical gap now and the serializer you write here is exactly the one the hosted feed will use later.</p>
+          <div class="two-up">
+            <div class="block">
+              <h5>Work</h5>
+              <ul class="work">
+                <li>Serialize items to valid iCalendar. Generate in-page as a blob and download via an anchor &mdash; <strong>do not add the <code>downloads</code> permission for this</strong> (see the release checklist for why).</li>
+                <li><strong>Stable <code>UID</code> per item</strong>, derived from the phase 00 id, so a later re-import updates events instead of duplicating them.</li>
+                <li>Timed deadlines as timed <code>VEVENT</code>s; date-only deadlines as <code>VALUE=DATE</code> all-day events. Get <code>DTSTAMP</code> and timezone handling right.</li>
+                <li>Sensible <code>VALARM</code> defaults, course code in the <code>SUMMARY</code> so it reads well in a crowded week view, and a link back to the Brightspace item in the <code>DESCRIPTION</code>.</li>
+                <li>Let the student choose which courses to include before export.</li>
+              </ul>
+            </div>
+            <div class="block">
+              <h5>Done when</h5>
+              <ul class="accept">
+                <li>Exported file imports cleanly into Google Calendar, Apple Calendar, and Outlook</li>
+                <li>Re-importing after a change updates events rather than duplicating them</li>
+                <li>All-day and timed events land on the correct date across timezones</li>
+                <li>UI states plainly that this is a snapshot, not a live sync</li>
+              </ul>
+            </div>
+          </div>
+          <div class="risk">
+            <h5>Risk</h5>
+            <p>Timezone and all-day handling is the classic source of &ldquo;my assignment shows on the wrong day&rdquo; bug reports. Test explicitly with a machine set to a non-UTC timezone, and with a deadline at 11:59pm &mdash; that is the one that slips a day.</p>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <h2>The risk that spans every phase</h2>
+    </div>
+    <div class="col">
+      <p><strong>Brightspace is not one target.</strong> Every institution runs its own instance, on its own D2L version, with its own theming, widget layout, and enabled features. Your due-date scraping already survives this or you would not have shipped &mdash; but a <em>gradebook</em> scrape touches far more institution-specific surface, and phase 01 is where per-school variance will bite.</p>
+      <p>Four mitigations, in order of value. Prefer the page&rsquo;s own JSON endpoints over DOM selectors, since markup is what institutions customize. Feature-detect and fail soft &mdash; hide the grade card rather than render a guess. Put a visible &ldquo;grades look wrong?&rdquo; report path directly on the grade card, because you will learn about breakage from users or not at all. And use a staged rollout so a scrape failure at one school does not reach your whole install base at once.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <h2>Release checklist</h2>
+    </div>
+    <div class="col" style="margin-bottom:1.75rem">
+      <p>The permissions line is the one that can actually hurt you, so take it first.</p>
+    </div>
+    <div class="note alarm" style="margin-top:0; margin-bottom:1.5rem">
+      <strong>Adding a permission disables your extension until every existing user re-accepts it.</strong> Chrome shows a re-consent prompt on update for newly requested permissions, and the extension sits inert until the user clicks through. On a paid install base that is a support event and a churn event. Nothing in phases 00&ndash;05 requires a new permission if you generate the ICS as a blob rather than reaching for <code>chrome.downloads</code> &mdash; keep it that way, and if a phase seems to need one, redesign the phase before you accept the prompt.
+    </div>
+    <div class="checklist">
+      <div class="checklist-group">
+        <h4>Manifest &amp; policy</h4>
+        <ul class="accept">
+          <li>No new permissions or host permissions vs. current published version</li>
+          <li>No remotely hosted code &mdash; all logic bundled (MV3 requirement)</li>
+          <li>Version bumped; changelog written</li>
+          <li>Any new library vendored, not CDN-loaded</li>
+        </ul>
+      </div>
+      <div class="checklist-group">
+        <h4>Privacy disclosure</h4>
+        <ul class="accept">
+          <li>Data-use disclosures reviewed &mdash; unchanged if everything stayed local</li>
+          <li>&ldquo;No data collection&rdquo; claim re-verified against phase 03 parsing path</li>
+          <li>Listing copy still accurate after the feature additions</li>
+        </ul>
+      </div>
+      <div class="checklist-group">
+        <h4>Store listing</h4>
+        <ul class="accept">
+          <li>New screenshots led by the grade dial and target slider</li>
+          <li>Pricing copy contradiction resolved &mdash; semester renewal <em>or</em> permanent license, stated once</li>
+          <li>Gradescope import surfaced prominently; it is a real differentiator</li>
+          <li>Description updated with grades and calendar export</li>
+        </ul>
+      </div>
+      <div class="checklist-group">
+        <h4>QA before submit</h4>
+        <ul class="accept">
+          <li>Tested against at least three different institutions&rsquo; Brightspace</li>
+          <li>Upgrade path tested from the currently published version with real user data</li>
+          <li>Weighted, points-based, and unconfigured gradebooks all verified</li>
+          <li>Non-UTC timezone pass on due dates and ICS export</li>
+          <li>Staged rollout enabled if available</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <span class="sec-num">05</span>
+      <h2>What the next release after this one looks like</h2>
+    </div>
+    <div class="col" style="margin-bottom:1.75rem">
+      <p>Not this cycle, but worth knowing where phase 00 is pointing. The sequence below is the backend track, and it is deliberately ordered so the privacy rewrite happens once, at the start, rather than accreting.</p>
+    </div>
+    <div class="later">
+      <div class="later-item">
+        <span class="rel">Release B &middot; foundation</span>
+        <h4>Sync account</h4>
+        <p>Extension becomes a client; server holds a normalized copy. Opt-in, local-only by default. This is where the privacy disclosure changes and where the listing copy gets rewritten honestly.</p>
+      </div>
+      <div class="later-item">
+        <span class="rel">Release B &middot; immediately after</span>
+        <h4>Email reminders</h4>
+        <p>A cron job and a template. Covers most of the reminder value with none of the SMS friction. Ship in the same release as sync so the account has an obvious payoff.</p>
+      </div>
+      <div class="later-item">
+        <span class="rel">Release C</span>
+        <h4>Live ICS subscription feed</h4>
+        <p>Reuses the phase 05 serializer behind a revocable signed URL. Subscriptions stay live, so every scrape updates the student&rsquo;s real calendar.</p>
+      </div>
+      <div class="later-item">
+        <span class="rel">Release C</span>
+        <h4>Parent view &amp; gift plan</h4>
+        <p>Three independent consent toggles, grades behind an extra confirmation, revocable anytime. The commercial point: the parent pays.</p>
+      </div>
+      <div class="later-item">
+        <span class="rel">Later, if at all</span>
+        <h4>SMS</h4>
+        <p>Gated behind 10DLC brand and campaign registration &mdash; weeks of paperwork and per-message cost. Paid tier only, and only once email proves the demand.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    Scope: extension-local features only &mdash; four of eight teardown recommendations.<br>
+    Backend-dependent work deliberately deferred to protect the current privacy disclosure.<br>
+    Written without access to the extension source; phase structure holds, file-level detail does not exist yet.
+  </footer>
+
+</div>
